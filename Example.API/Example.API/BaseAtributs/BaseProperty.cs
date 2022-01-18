@@ -7,12 +7,12 @@ namespace Example.API.Utility
     {
         [Column(Order = 0)]
         [Key]
-        public Guid Id { get; set; }
+        public Guid Id { get; set; } = Guid.NewGuid();
 
-        public Guid? CreatedBy { get; set; }
-        public Guid? ModifiedBy { get; set; }
-        public DateTime? CreatedDate { get; set; }
-        public DateTime? ModifiedDate { get; set; }
+        public Guid? CreatedBy { get; set; } = new Guid();
+        public Guid? ModifiedBy { get; set; } = new Guid();
+        public DateTime? CreatedDate { get; set; } = DateTime.Now;
+        public DateTime? ModifiedDate { get; set; } = DateTime.Now;
 
         // [DataType(DataType.Date)]
         //[DisplayFormat(DataFormatString = "{0:yyyy-MM-dd}", ApplyFormatInEditMode = true)]

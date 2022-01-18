@@ -1,4 +1,6 @@
-﻿using Example.API.Models;
+﻿using AutoMapper;
+using Example.API.Models;
+using Example.API.ViewModels;
 using Microsoft.IdentityModel.Tokens;
 using MyPhotos.API.Utilities;
 using System.IdentityModel.Tokens.Jwt;
@@ -9,6 +11,7 @@ namespace Example.API.Utility
 {
     public abstract class BaseService
     {
+        public Mapper mapper;
         public Guid newGuid = new Guid();
         private Dictionary<string, string> dictionaryList = new Dictionary<string, string>();
         public PancaAppContext db = new PancaAppContext();
@@ -22,12 +25,23 @@ namespace Example.API.Utility
             try
             {
                 this.db = db;
+                this.mapper = new Mapper(config);
                 this.contextAccessor = contextAccessor;
                 this.configuration = configuration;
                 baseUser = db.Users.Where(a => a.Username == email).FirstOrDefault();
             }
             catch { }
         }
+
+        #region CheckUsrLogin
+
+        public bool checkUsrLogin()
+        {
+            bool result = baseUser.Token == null ? true : false;
+            return result;
+        }
+
+        #endregion CheckUsrLogin
 
         #region ResponseAPI
 
@@ -84,5 +98,16 @@ namespace Example.API.Utility
         public abstract Task<ResponseModel> deleteData(Guid id);
 
         #endregion DefaultServices
+
+        #region Mapper
+
+        private MapperConfiguration config = new MapperConfiguration(cfg =>
+          {
+              cfg.AllowNullCollections = true;
+              cfg.AllowNullDestinationValues = true;
+              cfg.CreateMap<User, UserViewModel>().ReverseMap();
+          });
+
+        #endregion Mapper
     }
 }

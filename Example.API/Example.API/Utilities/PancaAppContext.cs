@@ -46,5 +46,7 @@ namespace MyPhotos.API.Utilities
 
         public virtual DbSet<User> Users { get; set; }
         public virtual DbSet<Position> Positions { get; set; }
+        public virtual DbSet<School> Schools { get; set; }
+        public virtual DbSet<Post> Posts { get; set; }
     }
 }

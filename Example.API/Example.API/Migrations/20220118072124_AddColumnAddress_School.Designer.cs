@@ -3,6 +3,7 @@ using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using MyPhotos.API.Utilities;
 
@@ -11,9 +12,10 @@ using MyPhotos.API.Utilities;
 namespace Example.API.Migrations
 {
     [DbContext(typeof(PancaAppContext))]
-    partial class PancaAppContextModelSnapshot : ModelSnapshot
+    [Migration("20220118072124_AddColumnAddress_School")]
+    partial class AddColumnAddress_School
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder

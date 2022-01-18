@@ -3,6 +3,7 @@ using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using MyPhotos.API.Utilities;
 
@@ -11,9 +12,10 @@ using MyPhotos.API.Utilities;
 namespace Example.API.Migrations
 {
     [DbContext(typeof(PancaAppContext))]
-    partial class PancaAppContextModelSnapshot : ModelSnapshot
+    [Migration("20220118051150_AddTable_Post")]
+    partial class AddTable_Post
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -79,6 +81,7 @@ namespace Example.API.Migrations
                         .HasColumnType("datetime2");
 
                     b.Property<string>("PostImage")
+                        .IsRequired()
                         .HasMaxLength(350)
                         .HasColumnType("nvarchar(350)");
 
@@ -109,11 +112,6 @@ namespace Example.API.Migrations
                         .ValueGeneratedOnAdd()
                         .HasColumnType("uniqueidentifier")
                         .HasColumnOrder(0);
-
-                    b.Property<string>("Address")
-                        .IsRequired()
-                        .HasMaxLength(300)
-                        .HasColumnType("nvarchar(300)");
 
                     b.Property<Guid?>("CreatedBy")
                         .HasColumnType("uniqueidentifier");
@@ -189,9 +187,11 @@ namespace Example.API.Migrations
                         .HasColumnType("uniqueidentifier");
 
                     b.Property<string>("Token")
+                        .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
                     b.Property<string>("UserImage")
+                        .IsRequired()
                         .HasMaxLength(350)
                         .HasColumnType("nvarchar(350)");
 
@@ -201,6 +201,10 @@ namespace Example.API.Migrations
                         .HasColumnType("nvarchar(100)");
 
                     b.HasKey("Id");
+
+                    b.HasIndex("PositionID");
+
+                    b.HasIndex("SchoolID");
 
                     b.ToTable("Users");
                 });
@@ -214,6 +218,25 @@ namespace Example.API.Migrations
                         .IsRequired();
 
                     b.Navigation("User");
+                });
+
+            modelBuilder.Entity("Example.API.Models.User", b =>
+                {
+                    b.HasOne("Example.API.Models.Position", "Position")
+                        .WithMany()
+                        .HasForeignKey("PositionID")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.HasOne("Example.API.Models.School", "School")
+                        .WithMany()
+                        .HasForeignKey("SchoolID")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("Position");
+
+                    b.Navigation("School");
                 });
 #pragma warning restore 612, 618
         }

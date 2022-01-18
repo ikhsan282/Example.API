@@ -3,6 +3,7 @@ using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using MyPhotos.API.Utilities;
 
@@ -11,9 +12,10 @@ using MyPhotos.API.Utilities;
 namespace Example.API.Migrations
 {
     [DbContext(typeof(PancaAppContext))]
-    partial class PancaAppContextModelSnapshot : ModelSnapshot
+    [Migration("20220118044836_UpdateTable_User")]
+    partial class UpdateTable_User
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -51,69 +53,12 @@ namespace Example.API.Migrations
                     b.ToTable("Positions");
                 });
 
-            modelBuilder.Entity("Example.API.Models.Post", b =>
-                {
-                    b.Property<Guid>("Id")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("uniqueidentifier")
-                        .HasColumnOrder(0);
-
-                    b.Property<Guid?>("CreatedBy")
-                        .HasColumnType("uniqueidentifier");
-
-                    b.Property<DateTime?>("CreatedDate")
-                        .HasColumnType("datetime2");
-
-                    b.Property<string>("Description")
-                        .IsRequired()
-                        .HasMaxLength(1000)
-                        .HasColumnType("nvarchar(1000)");
-
-                    b.Property<long>("LikeCount")
-                        .HasColumnType("bigint");
-
-                    b.Property<Guid?>("ModifiedBy")
-                        .HasColumnType("uniqueidentifier");
-
-                    b.Property<DateTime?>("ModifiedDate")
-                        .HasColumnType("datetime2");
-
-                    b.Property<string>("PostImage")
-                        .HasMaxLength(350)
-                        .HasColumnType("nvarchar(350)");
-
-                    b.Property<long>("ReportCount")
-                        .HasColumnType("bigint");
-
-                    b.Property<string>("Title")
-                        .IsRequired()
-                        .HasMaxLength(30)
-                        .HasColumnType("nvarchar(30)");
-
-                    b.Property<Guid>("UserID")
-                        .HasColumnType("uniqueidentifier");
-
-                    b.Property<long>("ViewCount")
-                        .HasColumnType("bigint");
-
-                    b.HasKey("Id");
-
-                    b.HasIndex("UserID");
-
-                    b.ToTable("Posts");
-                });
-
             modelBuilder.Entity("Example.API.Models.School", b =>
                 {
                     b.Property<Guid>("Id")
                         .ValueGeneratedOnAdd()
                         .HasColumnType("uniqueidentifier")
                         .HasColumnOrder(0);
-
-                    b.Property<string>("Address")
-                        .IsRequired()
-                        .HasMaxLength(300)
-                        .HasColumnType("nvarchar(300)");
 
                     b.Property<Guid?>("CreatedBy")
                         .HasColumnType("uniqueidentifier");
@@ -189,9 +134,11 @@ namespace Example.API.Migrations
                         .HasColumnType("uniqueidentifier");
 
                     b.Property<string>("Token")
+                        .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
                     b.Property<string>("UserImage")
+                        .IsRequired()
                         .HasMaxLength(350)
                         .HasColumnType("nvarchar(350)");
 
@@ -202,18 +149,30 @@ namespace Example.API.Migrations
 
                     b.HasKey("Id");
 
+                    b.HasIndex("PositionID");
+
+                    b.HasIndex("SchoolID");
+
                     b.ToTable("Users");
                 });
 
-            modelBuilder.Entity("Example.API.Models.Post", b =>
+            modelBuilder.Entity("Example.API.Models.User", b =>
                 {
-                    b.HasOne("Example.API.Models.User", "User")
+                    b.HasOne("Example.API.Models.Position", "Position")
                         .WithMany()
-                        .HasForeignKey("UserID")
+                        .HasForeignKey("PositionID")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
-                    b.Navigation("User");
+                    b.HasOne("Example.API.Models.School", "School")
+                        .WithMany()
+                        .HasForeignKey("SchoolID")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("Position");
+
+                    b.Navigation("School");
                 });
 #pragma warning restore 612, 618
         }

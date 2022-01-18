@@ -16,14 +16,13 @@ namespace Example.API.Controllers
     [ApiController]
     public class UsersController : BaseController
     {
-        private PancaAppContext db;
-        private UserService userService;
+        private UserService service;
 
         public UsersController(PancaAppContext db, IConfiguration iconf, IHttpContextAccessor contextAccessor)
         {
             string auth = contextAccessor.HttpContext.Request.Headers["Authorization"];
             string email = auth == string.Empty ? string.Empty : db.getUserUsername(auth);
-            userService = new UserService(db, email, contextAccessor, iconf);
+            service = new UserService(db, email, contextAccessor, iconf);
         }
 
         [HttpGet]
@@ -31,13 +30,13 @@ namespace Example.API.Controllers
         {
             try
             {
-                var result = await userService.getAllData();
+                var result = await service.getAllData();
                 if (result.Code == StatusCodes.Status404NotFound) return NotFound(result);
-                if (result.Code == StatusCodes.Status409Conflict) return NotFound(result);
-                if (result.Code == StatusCodes.Status400BadRequest) return NotFound(result);
-                if (result.Code == StatusCodes.Status204NoContent) return NotFound(result);
-                if (result.Code == StatusCodes.Status500InternalServerError) return NotFound(result);
-                if (result.Code == StatusCodes.Status201Created) return NotFound(result);
+                if (result.Code == StatusCodes.Status409Conflict) return Conflict(result);
+                if (result.Code == StatusCodes.Status400BadRequest) return BadRequest(result);
+                if (result.Code == StatusCodes.Status204NoContent) return NoContent();
+                if (result.Code == StatusCodes.Status500InternalServerError) return StatusCode(500, result);
+                if (result.Code == StatusCodes.Status201Created) return Created("localhost", result);
                 return Ok(result);
             }
             catch (Exception ex)
@@ -52,13 +51,13 @@ namespace Example.API.Controllers
         {
             try
             {
-                var result = await userService.getDataById(id);
+                var result = await service.getDataById(id);
                 if (result.Code == StatusCodes.Status404NotFound) return NotFound(result);
-                if (result.Code == StatusCodes.Status409Conflict) return NotFound(result);
-                if (result.Code == StatusCodes.Status400BadRequest) return NotFound(result);
-                if (result.Code == StatusCodes.Status204NoContent) return NotFound(result);
-                if (result.Code == StatusCodes.Status500InternalServerError) return NotFound(result);
-                if (result.Code == StatusCodes.Status201Created) return NotFound(result);
+                if (result.Code == StatusCodes.Status409Conflict) return Conflict(result);
+                if (result.Code == StatusCodes.Status400BadRequest) return BadRequest(result);
+                if (result.Code == StatusCodes.Status204NoContent) return NoContent();
+                if (result.Code == StatusCodes.Status500InternalServerError) return StatusCode(500, result);
+                if (result.Code == StatusCodes.Status201Created) return Created("localhost", result);
                 return Ok(result);
             }
             catch (Exception ex)
@@ -72,13 +71,13 @@ namespace Example.API.Controllers
         {
             try
             {
-                var result = await userService.postData(request);
+                var result = await service.postData(request);
                 if (result.Code == StatusCodes.Status404NotFound) return NotFound(result);
-                if (result.Code == StatusCodes.Status409Conflict) return NotFound(result);
-                if (result.Code == StatusCodes.Status400BadRequest) return NotFound(result);
-                if (result.Code == StatusCodes.Status204NoContent) return NotFound(result);
-                if (result.Code == StatusCodes.Status500InternalServerError) return NotFound(result);
-                if (result.Code == StatusCodes.Status201Created) return NotFound(result);
+                if (result.Code == StatusCodes.Status409Conflict) return Conflict(result);
+                if (result.Code == StatusCodes.Status400BadRequest) return BadRequest(result);
+                if (result.Code == StatusCodes.Status204NoContent) return NoContent();
+                if (result.Code == StatusCodes.Status500InternalServerError) return StatusCode(500, result);
+                if (result.Code == StatusCodes.Status201Created) return Created("localhost", result);
                 return Ok(result);
             }
             catch (Exception ex)
@@ -93,13 +92,13 @@ namespace Example.API.Controllers
         {
             try
             {
-                var result = await userService.putData(id, request);
+                var result = await service.putData(id, request);
                 if (result.Code == StatusCodes.Status404NotFound) return NotFound(result);
-                if (result.Code == StatusCodes.Status409Conflict) return NotFound(result);
-                if (result.Code == StatusCodes.Status400BadRequest) return NotFound(result);
-                if (result.Code == StatusCodes.Status204NoContent) return NotFound(result);
-                if (result.Code == StatusCodes.Status500InternalServerError) return NotFound(result);
-                if (result.Code == StatusCodes.Status201Created) return NotFound(result);
+                if (result.Code == StatusCodes.Status409Conflict) return Conflict(result);
+                if (result.Code == StatusCodes.Status400BadRequest) return BadRequest(result);
+                if (result.Code == StatusCodes.Status204NoContent) return NoContent();
+                if (result.Code == StatusCodes.Status500InternalServerError) return StatusCode(500, result);
+                if (result.Code == StatusCodes.Status201Created) return Created("localhost", result);
                 return Ok(result);
             }
             catch (Exception ex)
@@ -114,13 +113,13 @@ namespace Example.API.Controllers
         {
             try
             {
-                var result = await userService.deleteData(id);
+                var result = await service.deleteData(id);
                 if (result.Code == StatusCodes.Status404NotFound) return NotFound(result);
-                if (result.Code == StatusCodes.Status409Conflict) return NotFound(result);
-                if (result.Code == StatusCodes.Status400BadRequest) return NotFound(result);
-                if (result.Code == StatusCodes.Status204NoContent) return NotFound(result);
-                if (result.Code == StatusCodes.Status500InternalServerError) return NotFound(result);
-                if (result.Code == StatusCodes.Status201Created) return NotFound(result);
+                if (result.Code == StatusCodes.Status409Conflict) return Conflict(result);
+                if (result.Code == StatusCodes.Status400BadRequest) return BadRequest(result);
+                if (result.Code == StatusCodes.Status204NoContent) return NoContent();
+                if (result.Code == StatusCodes.Status500InternalServerError) return StatusCode(500, result);
+                if (result.Code == StatusCodes.Status201Created) return Created("localhost", result);
                 return Ok(result);
             }
             catch (Exception ex)

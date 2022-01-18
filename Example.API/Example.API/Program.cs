@@ -88,6 +88,7 @@ app.UseSwagger();
 app.UseSwaggerUI(o =>
 {
     o.SwaggerEndpoint("v1/swagger.json", "MyPhotos v1");
+    //o.RoutePrefix = "";
 });
 
 app.MapControllerRoute(
