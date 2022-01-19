@@ -10,13 +10,21 @@ namespace Example.API.Models
 {
     public partial class User : BaseProperty
     {
-        public Guid PositionID { get; set; }
+        [JsonIgnore]
+        [ForeignKey("PositionID")]
+        public Position Position { get; set; }
 
+        [JsonIgnore]
+        [ForeignKey("SchoolID")]
+        public School School { get; set; }
+
+        public Guid PositionID { get; set; }
         public Guid SchoolID { get; set; }
 
         [MaxLength(100)]
         public string Username { get; set; }
 
+        [JsonIgnore]
         [MaxLength(100)]
         public string Password { get; set; }
 

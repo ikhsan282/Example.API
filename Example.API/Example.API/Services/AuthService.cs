@@ -14,7 +14,7 @@ namespace Example.API.Services
 
         public async Task<ResponseModel> postAuth(AuthViewModel request)
         {
-            User check = await db.Users.Where(a => a.Username == request.Username && a.Password == Public.encryptPassword(request.Password)).FirstOrDefaultAsync();
+            var check = await db.Users.Where(a => a.Username == request.Username && a.Password == Public.encryptPassword(request.Password)).FirstOrDefaultAsync();
 
             if (check == null)
             {
@@ -24,7 +24,8 @@ namespace Example.API.Services
 
             var data = getJWT(check);
 
-            check.Token = data.ToString();
+            check.Token = data["signature"];
+            Public.TOKEN = check.Token;
 
             await db.SaveChangesAsync();
             response(result, 200, data: data);
@@ -57,12 +58,33 @@ namespace Example.API.Services
 
             User add = mapper.Map<User>(request);
             add.Password = Public.encryptPassword(add.Password);
+            add.UserImage = "default-user-image.png";
 
             await db.Users.AddAsync(add);
             await db.SaveChangesAsync();
 
             response(result, 201, data: add);
 
+            return result;
+        }
+
+        public async Task<ResponseModel> Logout()
+        {
+            if (checkUsrLogin())
+            {
+                response(result, 401, message: "Unauthorized");
+                return result;
+            }
+
+            var user = await db.Users.Where(x => x.Token == Public.TOKEN).FirstOrDefaultAsync();
+
+            if (user != null)
+            {
+                Public.TOKEN = string.Empty;
+                user.Token = null;
+                await db.SaveChangesAsync();
+                response(result, 200, "Successfully Logout");
+            }
             return result;
         }
 

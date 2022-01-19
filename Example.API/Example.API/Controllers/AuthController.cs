@@ -13,7 +13,7 @@ namespace Example.API.BaseAtributs
 {
     [Produces("application/json")]
     [ApiVersion("1.0")]
-    [Route("api/v{version:apiVersion}/")]
+    [Route("api/v{version:apiVersion}/auth")]
     [ApiController]
     public class AuthController : ControllerBase
     {
@@ -27,7 +27,7 @@ namespace Example.API.BaseAtributs
         }
 
         [HttpPost]
-        [Route("auth")]
+        [Route("login")]
         public async Task<ActionResult> postAuth(AuthViewModel request)
         {
             try
@@ -61,6 +61,23 @@ namespace Example.API.BaseAtributs
                 if (result.Code == StatusCodes.Status204NoContent) return NoContent();
                 if (result.Code == StatusCodes.Status500InternalServerError) return StatusCode(500, result);
                 if (result.Code == StatusCodes.Status201Created) return Created("localhost", result);
+                return Ok(result);
+            }
+            catch (Exception ex)
+            {
+                return StatusCode(500, ex.Message);
+            }
+        }
+
+        [Authorize]
+        [HttpGet]
+        [Route("logout")]
+        public async Task<ActionResult> getLogout()
+        {
+            try
+            {
+                var result = await service.Logout();
+                if (result.Code == StatusCodes.Status401Unauthorized) return Unauthorized(result);
                 return Ok(result);
             }
             catch (Exception ex)

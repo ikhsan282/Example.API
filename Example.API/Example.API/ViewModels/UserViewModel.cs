@@ -32,7 +32,6 @@ namespace Example.API.ViewModels
         [Required]
         [MaxLength(200)]
         public string? Bio { get; set; }
-
         [Required]
         public DateTime DateOfBirth { get; set; }
     }

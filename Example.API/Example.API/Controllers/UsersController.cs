@@ -1,5 +1,6 @@
 ﻿using Example.API.Services;
 using Example.API.Utilities;
+using Example.API.ViewModels;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
@@ -10,11 +11,12 @@ using System.Threading.Tasks;
 
 namespace Example.API.Controllers
 {
+    //[Authorize]
     [Produces("application/json")]
     [ApiVersion("1.0")]
-    [Route("api/v{version:apiVersion}/")]
+    [Route("api/v{version:apiVersion}/users/")]
     [ApiController]
-    public class UsersController : BaseController
+    public class UsersController : ControllerBase
     {
         private UserService service;
 
@@ -26,7 +28,7 @@ namespace Example.API.Controllers
         }
 
         [HttpGet]
-        public override async Task<ActionResult> getAllData()
+        public async Task<ActionResult> getAllData()
         {
             try
             {
@@ -46,8 +48,28 @@ namespace Example.API.Controllers
         }
 
         [HttpGet]
+        public async Task<ActionResult> getUserMe()
+        {
+            try
+            {
+                var result = await service.getUserMe();
+                if (result.Code == StatusCodes.Status404NotFound) return NotFound(result);
+                if (result.Code == StatusCodes.Status409Conflict) return Conflict(result);
+                if (result.Code == StatusCodes.Status400BadRequest) return BadRequest(result);
+                if (result.Code == StatusCodes.Status204NoContent) return NoContent();
+                if (result.Code == StatusCodes.Status500InternalServerError) return StatusCode(500, result);
+                if (result.Code == StatusCodes.Status201Created) return Created("localhost", result);
+                return Ok(result);
+            }
+            catch (Exception ex)
+            {
+                return StatusCode(500, ex.Message);
+            }
+        }
+
+        [HttpGet]
         [Route("{id}")]
-        public override async Task<ActionResult> getDataById(Guid id)
+        public async Task<ActionResult> getDataById(Guid id)
         {
             try
             {
@@ -67,11 +89,12 @@ namespace Example.API.Controllers
         }
 
         [HttpPost]
-        public override async Task<ActionResult> postData(object request)
+        [Route("upload-image")]
+        public async Task<ActionResult> postImage(IFormFile uploadImage)
         {
             try
             {
-                var result = await service.postData(request);
+                var result = await service.postImage(uploadImage);
                 if (result.Code == StatusCodes.Status404NotFound) return NotFound(result);
                 if (result.Code == StatusCodes.Status409Conflict) return Conflict(result);
                 if (result.Code == StatusCodes.Status400BadRequest) return BadRequest(result);
@@ -88,7 +111,7 @@ namespace Example.API.Controllers
 
         [HttpPut]
         [Route("{id}")]
-        public override async Task<ActionResult> putData(Guid id, object request)
+        public async Task<ActionResult> putData(Guid id, UserViewModel request)
         {
             try
             {
@@ -109,7 +132,7 @@ namespace Example.API.Controllers
 
         [HttpDelete]
         [Route("{id}")]
-        public override async Task<ActionResult> deleteData(Guid id)
+        public async Task<ActionResult> deleteData(Guid id)
         {
             try
             {

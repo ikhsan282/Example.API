@@ -5,8 +5,8 @@ namespace Example.API.Utility
 {
     public class BaseProperty
     {
-        [Column(Order = 0)]
         [Key]
+        [Column(Order = 0)]
         public Guid Id { get; set; } = Guid.NewGuid();
 
         public Guid? CreatedBy { get; set; } = new Guid();
@@ -19,6 +19,7 @@ namespace Example.API.Utility
         // [StringLength(50, ErrorMessage = "First name cannot be longer than 50 characters.")]
         //[StringLength(50, MinimumLength=2)]
         //[ForeignKey("State_ID")]
-        //
+        // [DataType(DataType.Date)]
+        // [DisplayFormat(DataFormatString = "{0:yyyy-MM-dd}", ApplyFormatInEditMode = true)]
     }
 }

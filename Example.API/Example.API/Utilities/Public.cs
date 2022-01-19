@@ -7,6 +7,7 @@ namespace Example.API.Utility
     public class Public
     {
         public static string PATH_IMAGE = Path.GetFullPath(Environment.CurrentDirectory + @"\wwwroot\Images");
+        public static string? TOKEN = null;
 
         public static string encryptPassword(string password)
         {

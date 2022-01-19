@@ -14,6 +14,8 @@ namespace Example.API.Models
         [ForeignKey("UserID")]
         public User User { get; set; }
 
+        public Guid UserID { get; set; }
+
         [MaxLength(30)]
         public string Title { get; set; }
 
