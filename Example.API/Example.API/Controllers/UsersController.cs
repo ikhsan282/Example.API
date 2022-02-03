@@ -48,6 +48,7 @@ namespace Example.API.Controllers
         }
 
         [HttpGet]
+        [Route("me")]
         public async Task<ActionResult> getUserMe()
         {
             try

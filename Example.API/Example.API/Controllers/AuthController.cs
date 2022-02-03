@@ -54,7 +54,7 @@ namespace Example.API.BaseAtributs
         {
             try
             {
-                var result = await service.postSignUp(request);
+                var result = await service.postData(request);
                 if (result.Code == StatusCodes.Status404NotFound) return NotFound(result);
                 if (result.Code == StatusCodes.Status409Conflict) return Conflict(result);
                 if (result.Code == StatusCodes.Status400BadRequest) return BadRequest(result);

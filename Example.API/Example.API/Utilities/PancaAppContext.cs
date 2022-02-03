@@ -7,6 +7,8 @@ namespace MyPhotos.API.Utilities
 {
     public class PancaAppContext : DbContext
     {
+        private readonly string connectionString = new ConfigurationBuilder().AddJsonFile("appsettings.json").Build().GetSection("ConnectionStrings")["db"];
+
         private class UserInfoLogin
         { public string Email { get; set; } }
 
@@ -40,7 +42,7 @@ namespace MyPhotos.API.Utilities
         {
             if (!optionsBuilder.IsConfigured)
             {
-                optionsBuilder.UseSqlServer("Server=.\\ITSS;Database=PancaApp;Trusted_Connection=True");
+                optionsBuilder.UseSqlServer(connectionString);
             }
         }
 

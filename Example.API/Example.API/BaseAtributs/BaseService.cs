@@ -91,7 +91,7 @@ namespace Example.API.Utility
 
         public abstract Task<ResponseModel> getDataById(Guid id);
 
-        public abstract Task<ResponseModel> postData(object request);
+        public abstract Task<ResponseModel> postData(Object request);
 
         public abstract Task<ResponseModel> putData(Guid id, Object request);
 
@@ -103,7 +103,7 @@ namespace Example.API.Utility
 
         public string getUrlUserImages()
         {
-            return contextAccessor.HttpContext.Request.Scheme + "://" + contextAccessor.HttpContext.Request.Host.Value + "/user-images/";
+            return contextAccessor?.HttpContext?.Request.Scheme + "://" + contextAccessor?.HttpContext?.Request.Host.Value + "/user-images/";
         }
 
         #endregion GetUrl
@@ -111,11 +111,11 @@ namespace Example.API.Utility
         #region Mapper
 
         private MapperConfiguration config = new MapperConfiguration(cfg =>
-             {
-                 cfg.AllowNullCollections = true;
-                 cfg.AllowNullDestinationValues = true;
-                 cfg.CreateMap<User, UserViewModel>().ReverseMap();
-             });
+               {
+                   cfg.AllowNullCollections = true;
+                   cfg.AllowNullDestinationValues = true;
+                   cfg.CreateMap<User, UserViewModel>().ReverseMap();
+               });
 
         #endregion Mapper
     }

@@ -10,11 +10,11 @@ namespace Example.API.Models
 {
     public partial class User : BaseProperty
     {
-        [JsonIgnore]
+        //[JsonIgnore]
         [ForeignKey("PositionID")]
         public Position Position { get; set; }
 
-        [JsonIgnore]
+        //[JsonIgnore]
         [ForeignKey("SchoolID")]
         public School School { get; set; }
 
@@ -44,6 +44,7 @@ namespace Example.API.Models
         [MaxLength(350)]
         public string? UserImage { get; set; }
 
+        [JsonIgnore]
         public string? Token { get; set; }
     }
 }

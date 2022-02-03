@@ -14,7 +14,7 @@ namespace Example.API.Services
 
         public async Task<ResponseModel> postAuth(AuthViewModel request)
         {
-            var check = await db.Users.Where(a => a.Username == request.Username && a.Password == Public.encryptPassword(request.Password)).FirstOrDefaultAsync();
+            var check = await db.Users.FirstOrDefaultAsync(a => a.Username == request.Username && a.Password == Public.encryptPassword(request.Password));
 
             if (check == null)
             {
@@ -34,9 +34,9 @@ namespace Example.API.Services
 
         public async Task<ResponseModel> postSignUp(UserViewModel request)
         {
-            var check = await db.Users.Where(a => a.Username == request.Username).FirstOrDefaultAsync();
-            var checkPosition = await db.Positions.Where(a => a.Id == request.PositionID).FirstOrDefaultAsync();
-            var checkSchool = await db.Schools.Where(a => a.Id == request.SchoolID).FirstOrDefaultAsync();
+            var check = await db.Users.FirstOrDefaultAsync(a => a.Username == request.Username);
+            var checkPosition = await db.Positions.FirstOrDefaultAsync(a => a.Id == request.PositionID);
+            var checkSchool = await db.Schools.FirstOrDefaultAsync(a => a.Id == request.SchoolID);
 
             if (check != null)
             {
@@ -46,13 +46,13 @@ namespace Example.API.Services
 
             if (checkPosition == null)
             {
-                response(result, 404, message: "PositionID not found");
+                response(result, 404, message: "PositionId not found");
                 return result;
             }
 
             if (checkSchool == null)
             {
-                response(result, 404, message: "SchoolID not found");
+                response(result, 404, message: "SchoolId not found");
                 return result;
             }
 
@@ -76,7 +76,7 @@ namespace Example.API.Services
                 return result;
             }
 
-            var user = await db.Users.Where(x => x.Token == Public.TOKEN).FirstOrDefaultAsync();
+            var user = await db.Users.FirstOrDefaultAsync(x => x.Token == Public.TOKEN);
 
             if (user != null)
             {

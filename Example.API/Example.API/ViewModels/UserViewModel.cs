@@ -5,6 +5,9 @@ namespace Example.API.ViewModels
     public class UserViewModel
     {
         [Required]
+        public Guid Id { get; set; }
+
+        [Required]
         public Guid PositionID { get; set; }
 
         [Required]
@@ -32,6 +35,7 @@ namespace Example.API.ViewModels
         [Required]
         [MaxLength(200)]
         public string? Bio { get; set; }
+
         [Required]
         public DateTime DateOfBirth { get; set; }
     }
